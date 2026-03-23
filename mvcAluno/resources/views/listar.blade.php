@@ -23,8 +23,10 @@
                     <td>{{$aluno->id }}</td>
                     <td>{{$aluno->nome }}</td>
                     <td>{{$aluno->email }}</td>
-                    <td>faremos na proxima AULA</td>
-                    <td>faremso na prxoma aula</td>
+                    <td>
+                        <a href="{{route('aluno.atualizar', $aluno->id)}}">Atualizar</a>
+                    </td>
+                    <td>faremos na proxima aula</td>
                 </tr>
             @empty
                 <tr>
