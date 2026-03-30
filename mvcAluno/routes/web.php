@@ -13,9 +13,11 @@ Route::get('/aluno/cadastrar', function(){
     return view('cadastro');
 })->name('aluno.cadastro');
 
-//POST - enviar od dados para cadastrar usuarios
-Route::post('aluno/salvar', [AlunoController::class, 'add']) -> name('aluno.salvar');
+//POST - enviar os dados para cadastrar usuarios
+Route::post('/aluno/salvar', [AlunoController::class, 'add']) -> name('aluno.salvar');
 
 Route::get('/aluno/{id}/atualizar', [AlunoController::class, 'atualizar']) -> name('aluno.atualizar');
 
-Route::put('aluno/{id}/update',[AlunoController::class, 'update']) -> name('aluno.update');
+Route::put('/aluno/{id}/update',[AlunoController::class, 'update']) -> name('aluno.update');
+
+Route::delete('/aluno/{id}', [AlunoController::class, 'deletar'])->name('aluno.deletar');
