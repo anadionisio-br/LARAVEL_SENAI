@@ -50,8 +50,8 @@ class AlunoController extends Controller
     }
 
     public function deletar($id){
-        $aluno = Aluno::findOrFail($id);
-        $aluno->delete();
+        $aluno = Aluno::findOrFail($id); //busca o aluno p depois deletar
+        $aluno->delete(); //faz o delete no banco de dados 
 
         return redirect()->route('aluno.listar')->with('success','Aluno excluído com sucesso!');
     }
