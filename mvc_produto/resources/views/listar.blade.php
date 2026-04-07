@@ -14,6 +14,9 @@
                 <th>NOME</th>
                 <th>QUANTIDADE</th>
                 <th>PRECO</th>
+                <th>ID PRODUTO</th>
+                <th>SETOR</th>
+                <th>Nº CORREDOR</th>
                 <th>ATUALIZAR</th>
                 <th>DELETAR</th>
             </tr>
@@ -25,10 +28,48 @@
                     <td>{{$produto->nome }}</td>
                     <td>{{$produto->quantidade }}</td>
                     <td>{{$produto->preco }}</td>
+
+                    <td>{{ $produto->setor?->id ?? '-' }}</td>
+                    <td>{{ $produto->setor?->nome ?? '-' }}</td>
+                    <td>{{ $produto->setor?->numCorredor ?? '-' }}</td>
                     <td>
                         <a href="{{route('produto.atualizar', $produto->id)}}">Atualizar</a>
                     </td>
-                    <td></td>
+                    <td>
+                        <form action="{{route('produto.deletar', $produto->id)}}" method="POST" onsubmit="return confirm('Deseja realmente excluir?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Excluir</button>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td conspan="3">Nenhum produto encontrado</td>
+                </tr>
+            @endforelse
+
+            <table border="1">
+        <thead>
+            <tr>
+                <th>DESCRIÇÃO</th>
+                <th>TAMANHO</th>
+                <th>PESO</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($setores as $setor)
+                <tr>
+                    <td>{{$setor->descricao }}</td>
+                    <td>{{$setor->tamanho }}</td>
+                    <td>{{$setor->peso }}</td>
+                        <a href="{{route('detalheProduto.atualizar', $detalheProduto->id)}}">Atualizar</a>
+                    </td>
+                    <td>
+                        <form action="{{route('detalheProduto.deletar', $detalheProduto->id)}}" method="POST" onsubmit="return confirm('Deseja realmente excluir?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Excluir</button>
+                    </td>
                 </tr>
             @empty
                 <tr>

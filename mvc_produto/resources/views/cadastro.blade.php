@@ -1,42 +1,70 @@
 <!DOCTYPE html>
-<html lang="{{str_replace('_','-',app()->getLocale())}}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cadastro Produtos</title>
 </head>
-<body  style="font-family: 'Arial', sans-serif;" >
+<body style="font-family: Arial, sans-serif;">
+
     <h1>Cadastro Produtos</h1>
 
     @if(session('success'))
-        <p style="color:green">{{ session('success')}}</p>
+        <p style="color:green">{{ session('success') }}</p>
     @endif
 
-    <form action="{{route('produto.salvar')}}" method="POST">
+    <form action="{{ route('produto.salvar') }}" method="POST">
         @csrf
-        <label for="nome">Nome: </label>
-        <input type="text" name="nome" id="nome" placeholder="Nome" require value="{{old('nome')}}">
+
+        <label>Nome:</label>
+        <input type="text" name="nome" required value="{{ old('nome') }}">
         <br><br>
 
-        <label for="quantidade">Quantidade: </label>
-        <input type="int", name="quantidade" placeholder="quantidade" require value="{{old('quantidade')}}">
+        <label>Quantidade:</label>
+        <input type="number" name="quantidade" required value="{{ old('quantidade') }}">
         <br><br>
 
-        <label for="preco">Preço: </label>
-        <input type="double" name="preco" id="preco" placeholder="preco" require value="{{old('preco')}}">
+        <label>Preço:</label>
+        <input type="number" step="0.01" name="preco" required value="{{ old('preco') }}">
         <br><br>
 
-        <input type="submit" value="Cadastrar" style="background-color: rgb(68, 0, 255); color: white;">
+        <label>Setor:</label>
+        <select id="setor" name="setor_id" required>
+            <option value="">-- Escolha uma opção --</option>
+            @foreach($setores as $setor)
+                <option value="{{ $setor->id }}"
+                    {{ old('setor') == $setor->id ? 'selected' : '' }}>
+                    {{ $setor->nome }} (Corredor {{ $setor->numCorredor }})
+                </option>
+            @endforeach
+        </select>
+        <br><br>
+
+        <label>Descrição: </label>
+        <input type="text" name="descricao" required value="{{ old('descricao') }}">
+        <br><br>
+
+        <label>Tamanho: </label>
+        <input type="text" name="tamanho" required value="{{old('tamanho')}}">
+        <br><br>
+
+        <label>Peso: </label>
+        <input type="text" name="peso" required value="{{old('peso')}}">
+        <br><br>
+
+        <input type="submit" value="Cadastrar" style="background-color: blue; color: white;">
+
     </form>
 
     @if($errors->any())
-        <div style="color: red">
+        <div style="color:red">
             <ul>
-                @foreach ($errors->all() as $erroor)
-                    <li>{{$errors}}</li>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
                 @endforeach
             </ul>
         </div>
     @endif
+
 </body>
 </html>

@@ -3,10 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-class Produto extends Model{
+
+class Produto extends Model
+{
     protected $fillable = [
         'nome',
         'quantidade',
-        'preco'
+        'preco',
+        'setor_id',  // chave estrangeira
     ];
+
+    public function setor()
+    {
+        return $this->belongsTo(Setores::class, 'setor_id');
+    }
 }
