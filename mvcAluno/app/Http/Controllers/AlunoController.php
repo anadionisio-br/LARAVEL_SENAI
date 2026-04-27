@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Aluno;
 use App\Models\Turma;
+use App\Models\Info;
 use Illuminate\Http\Request;
 
 class AlunoController extends Controller
@@ -21,30 +22,34 @@ class AlunoController extends Controller
     }
 
     // SALVAR
-    public function add(Request $request){
+   public function add(Request $request){
 
-        $request->validate([
-            'nome' => 'required|string|max:255',
-            'email' => 'required|string|max:255|unique:alunos,email',
-            'turma_id' => 'required|exists:turmas,id'
-        ]);
+    $request->validate([
+        'nome' => 'required|string|max:255',
+        'email' => 'required|string|max:255|unique:alunos,email',
+        'turma_id' => 'required|exists:turmas,id',
+        'endereco' => 'required|string|max:255',
+        'telefone' => 'required|string|max:255',
+        'idade' => 'required|numeric',
+        'data_nascimento' => 'required|date'
+    ]);
 
-        Aluno::create([
-            'nome' => $request->nome,
-            'email' => $request->email,
-            'turma_id' => $request->turma_id
-        ]);
+    $aluno = Aluno::create([
+        'nome' => $request->nome,
+        'email' => $request->email,
+        'turma_id' => $request->turma_id
+    ]);
 
-         Info::create([
-            'endereco' => $request->endereco,
-            'telefone' => $request->telefone,
-            'idade' => $request->idade,
-            'data_nascimento' => $request->data_nascimento,
-            'aluno_id' => $aluno->id
-        ]);
+    Info::create([
+        'endereco' => $request->endereco,
+        'telefone' => $request->telefone,
+        'idade' => $request->idade,
+        'data_nascimento' => $request->data_nascimento,
+        'aluno_id' => $aluno->id
+    ]);
 
-        return redirect()->back()->with('success', 'Aluno Cadastrado com Sucesso!');
-    }
+    return redirect()->back()->with('success', 'Aluno Cadastrado com Sucesso!');
+}
 
     // EDITAR
     public function atualizar($id){
