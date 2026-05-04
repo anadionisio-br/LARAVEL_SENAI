@@ -23,7 +23,7 @@ create table dadosPessoais(
     updated_at timestamp null
 );
 
-create table Departamento(
+create table Departamentos(
 	id int auto_increment primary key,
 	nome varchar(255),
     dataCriacao date,
@@ -35,4 +35,4 @@ create table Departamento(
 
 select * from Funcionarios;
 select * from dadosPessoais;
-select * from Departamento;
+select * from Departamentos;

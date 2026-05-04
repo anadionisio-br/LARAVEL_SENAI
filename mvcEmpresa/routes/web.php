@@ -11,13 +11,13 @@ Route::get('/', function () {
 // Funcionarios
 Route::get('/funcionario/listar',[FuncionarioController::class, 'listar'])->name('funcionario.listar');
 
-Route::get('/funcionario/cadastrar',[FuncionarioController::class, 'create'])->name('funcionario.cadastro');
+Route::get('/funcionario/cadastrar',[FuncionarioController::class, 'cadastro'])->name('funcionario.cadastro');
 
 Route::post('/funcionario/salvar',[FuncionarioController::class, 'add'])->name('funcionario.salvar');
 
-Route::get('/aluno/{id}/atualizar', [AlunoController::class, 'atualizar'])->name('aluno.atualizar');
+Route::get('/funcionario/{id}/atualizar', [FuncionarioController::class, 'atualizar'])->name('funcionario.atualizar');
 
-Route::put('/aluno/{id}/update', [AlunoController::class, 'update'])->name('aluno.update');
+Route::put('/funcionario/{id}/update', [FuncionarioController::class, 'update'])->name('funcionario.update');
 
 // Departamento
 Route::get('/departamento/cadastrar', function(){

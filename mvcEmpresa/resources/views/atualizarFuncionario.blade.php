@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_','-',app()->getLocale()) }}">
+<html lang="{{ str_replace('_','-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro de Funcionários</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualizar Funcionário</title>
 
     <style>
         body {
@@ -31,16 +32,19 @@
             margin-bottom: 15px;
         }
 
-        a {
-            display: inline-block;
-            margin: 5px;
+        .links a {
             text-decoration: none;
-            color: #4a69bd;
+            margin: 5px;
+            padding: 8px 12px;
+            background-color: #4a69bd;
+            color: white;
+            border-radius: 6px;
             font-size: 14px;
+            transition: 0.3s;
         }
 
-        a:hover {
-            text-decoration: underline;
+        .links a:hover {
+            background-color: #3b55a0;
         }
 
         label {
@@ -67,7 +71,7 @@
         button {
             width: 100%;
             padding: 12px;
-            background-color: #4a69bd;
+            background-color: #38ada9;
             color: white;
             border: none;
             border-radius: 8px;
@@ -77,7 +81,7 @@
         }
 
         button:hover {
-            background-color: #3b55a0;
+            background-color: #2f8f8b;
         }
 
         .success {
@@ -100,38 +104,18 @@
             padding-left: 20px;
             margin: 0;
         }
-
-        .links {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.links a {
-    text-decoration: none;
-    margin: 5px;
-    padding: 8px 12px;
-    background-color: #4a69bd;
-    color: white;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: 0.3s;
-}
-
-.links a:hover {
-    background-color: #3b55a0;
-}
     </style>
 </head>
 <body>
 
 <div class="container">
 
-    <h1>Cadastro de Funcionários</h1>
+    <h1>Atualizar Funcionário</h1>
 
     <div class="links">
+        <a href="{{route('funcionario.cadastro')}}">Cadastrar Funcionários</a>
         <a href="{{route('departamento.cadastro')}}">Cadastrar Departamento</a>
-    
-        <a href="{{route('funcionario.listar')}}">Listar Funcionários</a>
+        <a href="{{route('funcionario.listar')}}">Listar</a>
     </div>
 
     @if(session('success'))
@@ -140,37 +124,39 @@
         </div>
     @endif
 
-    <form action="{{ route('funcionario.salvar') }}" method="POST">
+    <form action="{{ route('funcionario.update', $funcionario->id) }}" method="POST">
         @csrf
+        @method('PUT')
 
         <label>Nome:</label>
-        <input type="text" name="nome" required value="{{ old('nome') }}">
+        <input type="text" name="nome" value="{{ old('nome', $funcionario->nome)}}" required>
 
         <label>Sobrenome:</label>
-        <input type="text" name="sobrenome" value="{{ old('sobrenome') }}">
+        <input type="text" name="sobrenome" value="{{ old('sobrenome', $funcionario->sobrenome)}}" required>
 
         <label>Email:</label>
-        <input type="email" name="email" required value="{{ old('email') }}">
+        <input type="email" name="email" value="{{ old('email', $funcionario->email)}}" required>
 
         <label>Cargo:</label>
-        <input type="text" name="cargo" required value="{{ old('cargo') }}">
+        <input type="text" name="cargo" value="{{ old('cargo', $funcionario->cargo)}}" required>
 
         <label>Data de Admissão:</label>
-        <input type="date" name="dataAdmissao" required value="{{ old('dataAdmissao') }}">
+        <input type="date" name="dataAdmissao" value="{{ old('dataAdmissao', $funcionario->dataAdmissao)}}" required>
 
         <label>Salário:</label>
-        <input type="number" name="salario" value="{{ old('salario') }}">
+        <input type="number" name="salario" value="{{ old('salario', $funcionario->salario)}}" required>
 
         <label for="departamento_id">Departamento:</label>
         <select name="departamento_id" id="departamento_id">
             @foreach ($departamentos as $departamento)
-                <option value="{{$departamento->id}}">
-                    {{$departamento->nome}}
+                <option value="{{ $departamento->id }}"
+                    {{ $funcionario->departamento_id == $departamento->id ? 'selected' : '' }}>
+                    {{ $departamento->nome }}
                 </option>
             @endforeach
         </select>
 
-        <button type="submit">Cadastrar</button>
+        <button type="submit">Atualizar</button>
     </form>
 
     @if($errors->any())
