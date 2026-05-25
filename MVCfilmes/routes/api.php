@@ -5,7 +5,7 @@ use App\Http\Controllers\AutorApiController;
 use App\Http\Controllers\FilmeApiController;
 
 
-// ---------------- AUTORES API ----------------
+//AUTORES API 
 
 Route::get('/autores', [AutorApiController::class, 'listarApi']);
 
@@ -15,9 +15,7 @@ Route::put('/autores/update/{id}', [AutorApiController::class, 'updateApi']);
 
 Route::delete('/autores/delete/{id}', [AutorApiController::class, 'deletarApi']);
 
-
-
-// ---------------- FILMES API ----------------
+// FILMES API 
 
 Route::get('/filmes', [FilmeApiController::class, 'listarApi']);
 

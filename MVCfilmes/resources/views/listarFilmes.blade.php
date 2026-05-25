@@ -20,59 +20,6 @@
 
     <div class="card p-4 mb-5">
 
-        <h3>Cadastrar Filme</h3>
-
-        <form action="{{ route('filme.add') }}" method="POST">
-
-            @csrf
-
-            <div class="mb-3">
-                <label>Título</label>
-                <input type="text" name="titulo" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label>Data Lançamento</label>
-                <input type="date" name="data_lancamento" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label>Sinopse</label>
-                <textarea name="sinopse" class="form-control"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label>Gênero</label>
-                <input type="text" name="genero" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label>Orçamento</label>
-                <input type="number" name="orcamento" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label>Autor</label>
-
-                <select name="autor_id" class="form-select">
-
-                    @foreach($autores as $autor)
-                        <option value="{{ $autor->id }}">
-                            {{ $autor->nome }}
-                        </option>
-                    @endforeach
-
-                </select>
-            </div>
-
-            <button class="btn btn-success">
-                Cadastrar Filme
-            </button>
-
-        </form>
-
-    </div>
-
     <table class="table table-bordered table-striped">
 
         <thead class="table-dark">

@@ -12,22 +12,6 @@
 
     <h1>Autores</h1>
 
-    <form action="{{ route('autor.add') }}" method="POST" class="mb-5">
-        @csrf
-
-        <input type="text" name="nome" placeholder="Nome" class="form-control mb-2">
-
-        <input type="date" name="data_nascimento" class="form-control mb-2">
-
-        <input type="email" name="email" placeholder="Email" class="form-control mb-2">
-
-        <input type="text" name="telefone" placeholder="Telefone" class="form-control mb-2">
-
-        <button class="btn btn-primary">
-            Cadastrar
-        </button>
-    </form>
-
     <table class="table table-bordered">
 
         <thead>
