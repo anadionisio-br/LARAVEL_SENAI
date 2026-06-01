@@ -8,13 +8,31 @@ use Illuminate\Http\Request;
 
 class FilmeController extends Controller
 {
-    public function listar()
+    public function listar(Request $request)
     {
-        $filmes = Filme::with('autor')->get();
+        try {
+            $query = Filme::query();
 
-        $autores = Autor::all();
+            //título
+            if ($request->filled('titulo')) {
+                $query->where('titulo', 'like', '%' . $request->titulo . '%');
+            }
 
-        return view('listarFilmes', compact('filmes', 'autores'));
+            // data lanç
+            if ($request->filled('data_lancamento')) {
+                $query->where('data_lancamento', $request->data_lancamento);
+            }
+
+            $filmes = $query->get();
+
+            return view('listarFilmes', compact('filmes'));
+
+        } catch (\Exception $e) {
+            return view('listarFilmes', [
+                'filmes' => collect(),
+                'erro' => 'Erro interno do servidor'
+            ]);
+        }
     }
 
     public function add(Request $request)
@@ -25,7 +43,7 @@ class FilmeController extends Controller
             'sinopse' => 'required|string|max:500',
             'genero' => 'required|string|max:255',
             'orcamento' => 'required|numeric',
-            'autor_id' => 'required|exists:Autor,id'
+            'autor_id' => 'required|exists:autores,id'
         ]);
 
         Filme::create([
@@ -58,19 +76,19 @@ class FilmeController extends Controller
             'sinopse' => 'required|string|max:500',
             'genero' => 'required|string|max:255',
             'orcamento' => 'required|numeric',
-            'autor_id' => 'required|exists:Autor,id'
+            'autor_id' => 'required|exists:autores,id'
         ]);
 
         $filme = Filme::findOrFail($id);
 
-        $filme->titulo = $request->titulo;
-        $filme->data_lancamento = $request->data_lancamento;
-        $filme->sinopse = $request->sinopse;
-        $filme->genero = $request->genero;
-        $filme->orcamento = $request->orcamento;
-        $filme->autor_id = $request->autor_id;
-
-        $filme->save();
+        $filme->update([
+            'titulo' => $request->titulo,
+            'data_lancamento' => $request->data_lancamento,
+            'sinopse' => $request->sinopse,
+            'genero' => $request->genero,
+            'orcamento' => $request->orcamento,
+            'autor_id' => $request->autor_id
+        ]);
 
         return redirect()->route('filme.listar')
             ->with('success', 'Filme atualizado com sucesso!');

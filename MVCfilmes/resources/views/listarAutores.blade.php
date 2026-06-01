@@ -1,44 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Autores</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
 
-<div class="container mt-5">
+    <div class="container mt-5">
 
-    <h1>Autores</h1>
+        <h1>Autores</h1>
 
-    <table class="table table-bordered">
+        <form method="GET" action="{{ route('autor.listar') }}">
+            <input type="text" name="nome" placeholder="Digite o nome do Autor" value="{{ request('nome') }}">
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-            </tr>
-        </thead>
+            <button type="submit"> buscar </button>
 
-        <tbody>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
 
-            @foreach($autores as $autor)
+                <tbody>
 
-            <tr>
-                <td>{{ $autor->id }}</td>
-                <td>{{ $autor->nome }}</td>
-                <td>{{ $autor->email }}</td>
-            </tr>
+                    @foreach ($autores as $autor)
+                        <tr>
+                            <td>{{ $autor->id }}</td>
+                            <td>{{ $autor->nome }}</td>
+                            <td>{{ $autor->email }}</td>
+                        </tr>
+                    @endforeach
 
-            @endforeach
+                </tbody>
 
-        </tbody>
+            </table>
 
-    </table>
-
-</div>
+    </div>
 
 </body>
+
 </html>

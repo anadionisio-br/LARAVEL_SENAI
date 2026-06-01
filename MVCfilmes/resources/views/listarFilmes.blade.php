@@ -1,60 +1,66 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Filmes</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
 
-<div class="container mt-5">
+    <div class="container mt-5">
 
-    <h1 class="mb-4">Filmes</h1>
+        <h1 class="mb-4">Filmes</h1>
 
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+        <form method="GET" action="{{ route('filme.listar') }}">
+            <input type="text" name="titulo" placeholder="Digite o titulo do Fillme" value="{{ request('titulo') }}">
 
-    <div class="card p-4 mb-5">
+            <button type="submit"> buscar </button>
 
-    <table class="table table-bordered table-striped">
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Data</th>
-                <th>Sinopse</th>
-                <th>Gênero</th>
-                <th>Orçamento</th>
-                <th>Autor</th>
-            </tr>
-        </thead>
+            <div class="card p-4 mb-5">
 
-        <tbody>
+                <table class="table table-bordered table-striped">
 
-            @foreach($filmes as $filme)
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Data</th>
+                            <th>Sinopse</th>
+                            <th>Gênero</th>
+                            <th>Orçamento</th>
+                            <th>Autor</th>
+                        </tr>
+                    </thead>
 
-            <tr>
-                <td>{{ $filme->id }}</td>
-                <td>{{ $filme->titulo }}</td>
-                <td>{{ $filme->data_lancamento }}</td>
-                <td>{{ $filme->sinopse }}</td>
-                <td>{{ $filme->genero }}</td>
-                <td>R$ {{ $filme->orcamento }}</td>
-                <td>{{ $filme->autor->nome ?? 'Sem Autor' }}</td>
-            </tr>
+                    <tbody>
 
-            @endforeach
+                        @foreach ($filmes as $filme)
+                            <tr>
+                                <td>{{ $filme->id }}</td>
+                                <td>{{ $filme->titulo }}</td>
+                                <td>{{ $filme->data_lancamento }}</td>
+                                <td>{{ $filme->sinopse }}</td>
+                                <td>{{ $filme->genero }}</td>
+                                <td>R$ {{ $filme->orcamento }}</td>
+                                <td>{{ $filme->autor->nome ?? 'Sem Autor' }}</td>
+                            </tr>
+                        @endforeach
 
-        </tbody>
+                    </tbody>
 
-    </table>
+                </table>
 
-</div>
+            </div>
 
 </body>
+
 </html>
