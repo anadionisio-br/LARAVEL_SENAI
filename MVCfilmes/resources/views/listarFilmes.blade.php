@@ -17,6 +17,9 @@
         <form method="GET" action="{{ route('filme.listar') }}">
             <input type="text" name="titulo" placeholder="Digite o titulo do Fillme" value="{{ request('titulo') }}">
 
+        <form method="GET" action="{{ route('filme.listar') }}">
+            <input type="text" name="data_lancamento" placeholder="Digite a data de lançamento do filme" value="{{ request('data_lancamento') }}">
+
             <button type="submit"> buscar </button>
 
             @if (session('success'))

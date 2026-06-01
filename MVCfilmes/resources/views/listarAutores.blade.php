@@ -10,39 +10,53 @@
 
 <body>
 
-    <div class="container mt-5">
+<div class="container mt-5">
 
-        <h1>Autores</h1>
+    <h1>Autores</h1>
 
-        <form method="GET" action="{{ route('autor.listar') }}">
-            <input type="text" name="nome" placeholder="Digite o nome do Autor" value="{{ request('nome') }}">
+<form method="GET" action="{{ route('autor.listar') }}">
 
-            <button type="submit"> buscar </button>
+    <input type="text"
+           name="nome"
+           placeholder="Digite o nome do Autor"
+           value="{{ request('nome') }}">
 
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
+    <input type="text"
+           name="telefone"
+           placeholder="Digite o telefone"
+           value="{{ request('telefone') }}">
 
-                <tbody>
+    <button type="submit" class="btn btn-primary">
+        Buscar
+    </button>
 
-                    @foreach ($autores as $autor)
-                        <tr>
-                            <td>{{ $autor->id }}</td>
-                            <td>{{ $autor->nome }}</td>
-                            <td>{{ $autor->email }}</td>
-                        </tr>
-                    @endforeach
+</form>
 
-                </tbody>
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+            </tr>
+        </thead>
 
-            </table>
+        <tbody>
+            @forelse ($autores as $autor)
+                <tr>
+                    <td>{{ $autor->id }}</td>
+                    <td>{{ $autor->nome }}</td>
+                    <td>{{ $autor->email }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="3">Nenhum autor encontrado.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 
-    </div>
+</div>
 
 </body>
 
