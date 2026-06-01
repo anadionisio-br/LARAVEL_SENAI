@@ -1,37 +1,50 @@
 <?php
-
+// estou no ProdutiController.php
 namespace App\Http\Controllers;
+use App\Models\Produto;
+use App\Models\Setores;
 
-use App\Models\Setores;   // Importa o model Produto
 use Illuminate\Http\Request;
 
 class SetorController extends Controller
 {
-    public function listar()
-    {
-        // Busca todos os produtos junto com seus setores
-        $setores = Setores::all();
+    public function listar(Request $request){
+        try{
+            $query = Setores::query();
 
-        // Passa os produtos para a view
-        return view('listarSetor', compact('setores'));
+            //filtro por nome
+            //select * from setores where nome like %VAR%
+            if($request->filled('nome')){
+                $query->where('nome', 'like' , '%'.$request->nome.'%');
+            }
+
+            $setores = $query->get();
+
+            return view('listarSetores', compact('setores'));
+            
+        } catch(\Exception $e){
+                return view('listarSetores', [
+                    'setores' => collect(),
+                    'erro' => 'Erro interno do servidor'
+                ]);
+            }
     }
 
-        // Salva o produto no banco
-    public function add(Request $request)
-    {
-        // Validação dos dados
+    public function add(Request $request){
+
         $request->validate([
             'nome' => 'required|string|max:255',
-            'numCorredor' => 'required|integer|min:0',
+            'num_setor' => 'required|numeric|max:255',
+            // para poder ser nulo ou existir na tabela setores
         ]);
 
-        // Cria o produto
         Setores::create([
             'nome' => $request->nome,
-            'numCorredor' => $request->numCorredor,
+            'num_setor' => $request->num_setor
         ]);
 
-        // Redireciona de volta com mensagem de sucesso
-        return redirect()->back()->with('success', 'Produto cadastrado com sucesso!');
+        return redirect()->back()->with('success','Setor Cadastrado com sucesso!');
+
     }
+
 }

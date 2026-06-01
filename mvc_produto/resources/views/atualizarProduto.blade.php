@@ -21,7 +21,7 @@
         <br><br>
         <input type="numeric" name="quantidade" placeholder="Quantidade" value="{{ old('quantidade, $produto->quantidade')}}" required>
         <br><br>
-        <input type="numeric" name="preco" placeholder="Preço" value="{{ old('preco, $produto->preco')}}" required>
+        <input type="numeric" name="valor" placeholder="Preço" value="{{ old('valor, $produto->valor')}}" required>
         <br><br>
         <button type="submit" style="background-color: rgb(68, 0, 255); color: white;">Atualizar</button>
     </form>

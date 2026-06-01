@@ -1,58 +1,95 @@
 <?php
-
+// estou no ProdutiController.php
 namespace App\Http\Controllers;
-
 use App\Models\Produto;
 use App\Models\Setores;
+use App\Models\DetalheProdutos;
+
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
-    // Exibe o formulário de cadastro de produtos
-    public function create()
-    {
-        // Busca todos os setores do banco para popular o select
-        $setores = Setores::all();
-
-        // Envia para a view
-        return view('cadastro', compact('setores'));
+    public function listar(){
+        $produtos = Produto::with(['setor', 'detalheProduto'])->get();
+        return view('listarProdutos', compact('produtos'));
     }
 
-    // Salva o produto no banco
-    public function add(Request $request)
-    {
-        // Validação dos dados
+    public function cadastro(){
+        $setores = Setores::get();
+        return view('cadastroProduto', compact('setores'));
+    }
+
+    public function add(Request $request){
+
         $request->validate([
             'nome' => 'required|string|max:255',
-            'quantidade' => 'required|integer|min:0',
-            'preco' => 'required|numeric|min:0',
-            'setor_id' => 'required|exists:setores,id', // Garante que o setor existe
+            'quantidade' => 'required|numeric|max:255',
+            'valor' => 'required|numeric',
+            'setor_id' => 'nullable|exists:setores,id' 
+            // para poder ser nulo ou existir na tabela setores
         ]);
 
-        // Cria o detalheProduto
-        detalheProduto::create([
-            'descricao' => $request->descricao,
-            'tamanho' => $request->tamanho,
-            'peso' => $request->peso
-        ]);
-
-        // Cria o produto
-        Produto::create([
+        $produto = Produto::create([
             'nome' => $request->nome,
             'quantidade' => $request->quantidade,
-            'preco' => $request->preco,
-            'setor_id' => $request->setor_id,
+            'valor' => $request->valor,
+            'setor_id' => $request->setor_id
         ]);
 
-        // Redireciona de volta com mensagem de sucesso
-        return redirect()->back()->with('success', 'Produto cadastrado com sucesso!');
+        DetalheProdutos::create([
+            'descricao' => $request->descricao,
+            'peso' => $request->peso,
+            'tamanho' => $request->tamanho,
+            'produto_id' => $produto->id
+        ]);
+
+        return redirect()->back()->with('success','Produto Cadastrado com sucesso!');
+
     }
 
-    // Lista todos os produtos com setor
-    public function listar()
-    {
-        $produtos = Produto::with('setor')->get();
-
-        return view('listar', compact('produtos'));
+    public function atualizar($id){
+        $produto = Produto::findOrFail($id); // Busca o produto pelo ID
+        $setores = Setores::get();
+        // select * from produtos where id = $id
+        return view('atualizarProduto', compact('produto','setores'));
     }
+
+    public function update(Request $request, $id){
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'quantidade' => 'required|numeric|max:255',
+            'valor' => 'required|numeric',
+            'setor_id' => 'nullable|exists:setores,id' 
+            // para poder ser nulo ou existir na tabela setores
+        ]);
+
+        $produto = Produto::findOrFail($id); // buscar aluno para ser atualizado
+        $detalhe = DetalheProdutos::where('produto_id', $produto->id)->first();
+
+        $produto->nome = $request->nome; // atualizando o campo nome
+        $produto->quantidade = $request->quantidade; // atualizando o campo quantidade
+        $produto->valor = $request->valor; // atualizando o campo valor
+        $produto->setor_id = $request->setor_id; // atualizando o campo setor_id
+
+        $produto->save(); // salvando no banco de dados(fazendo update)
+
+        $detalhe->descricao = $request->descricao;
+        $detalhe->tamanho = $request->tamanho;
+        $detalhe->peso = $request->peso;
+
+        $detalhe->save();
+
+        return redirect()->back()->with('success','Produto atualizado com suceso');
+    }
+
+    public function deletar($id){
+        $produto = Produto::findOrFail($id); // buscar o produto para depois deletar
+        $produto->detalheProdutos?->delete(); // faz o delete da tabela segundaria primeiro
+        $produto->delete(); // faz o delete no banco de dados
+
+        return redirect()->route('produto.listar')
+            ->with('success','Aluno excluído com sucesso!');
+    }
+    
+
 }

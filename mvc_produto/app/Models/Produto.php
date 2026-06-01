@@ -9,12 +9,17 @@ class Produto extends Model
     protected $fillable = [
         'nome',
         'quantidade',
-        'preco',
+        'valor',
         'setor_id',  // chave estrangeira
     ];
 
     public function setor()
     {
         return $this->belongsTo(Setores::class, 'setor_id');
+    }    
+    
+    public function detalheProduto()
+    {
+        return $this->hasOne(DetalheProdutos::class, 'produto_id');
     }
 }
