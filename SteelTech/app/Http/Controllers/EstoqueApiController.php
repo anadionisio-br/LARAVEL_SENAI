@@ -49,8 +49,7 @@ class EstoqueApiController extends Controller
                 'dataFabricacao' => 'required|date',
                 'tipoMateria' => 'required|string|max:500',
                 'preco' => 'required|string',
-                'quantidade' => 'required|numeric',
-                'autor_id' => 'required|exists:autores,id'
+                'quantidade' => 'required|numeric'
             ]);
 
 
